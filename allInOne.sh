@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# run this as root
+# log in and run this as root
 #
 STACKSCRIPT_USERNAME=bunty
 LOG_PATH=/root/stackscript.log
@@ -24,7 +24,7 @@ setupFirewall() {
   logToFile "setting up firewall..."
   ufw allow 22
   ufw allow http
-  ufw enable
+  ufw enable -y
   logToFile "firewall active :)"
 }
 cleanup() {
@@ -49,9 +49,10 @@ zsh() {
   usermod -s /bin/zsh $STACKSCRIPT_USERNAME
   logToFile "$STACKSCRIPT_USERNAME shell set to zsh :)"
   # run install script as new user
-  runuser -l $SCRIPT_USERNAME -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
+  runuser -l $STACKSCRIPT_USERNAME -c 'sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended'
   logToFile "ohmyzsh installed :)"
 }  
+
 docker(){
   logToFile "installing docker..."
   apt-get remove docker docker-engine docker.io containerd runc
